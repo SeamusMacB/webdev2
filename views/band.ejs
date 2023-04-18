@@ -1,0 +1,27 @@
+<%- include('header') %>
+
+    <body>
+        <div class="text-center">
+            <h1>Welcome to the band section!</h1>
+        </div>
+
+        <% artistList.forEach((artist)=>{ %>
+
+            <div class="card">
+                <h2 class="card-title">
+
+
+                    <a href="/band?artist_id=<%= artist.artist_id%>">
+                        <%= artist.artist_name %>
+                    </a>
+                </h2>
+                <p>
+                    <%= artist.About %>
+                </p>
+                <div class="text-right"> <!-- text-right = text-align: right -->
+                    <a href="#" class="btn">Read more</a>
+                </div>
+            </div>
+
+            <% }) %>
+    </body>

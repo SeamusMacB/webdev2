@@ -1,0 +1,16 @@
+<%- include('header') %>
+
+<form action = "POST" id ="select" action ="/genre" value="submit">
+<div class="dropdown">
+    <select id ="genre">
+        <% genreList.forEach((genre) =>{ %> 
+        <option value="###"><%= genre.genre_desc %></option>
+        <% }) %>
+    </select>
+</form>
+
+
+  <!-- Requires halfmoon.js -->
+  <script src="path/to/halfmoon.js"></script>
+
+<%- include('footer') %>

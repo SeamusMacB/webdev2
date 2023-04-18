@@ -1,0 +1,23 @@
+<%- include('header') %>
+
+
+<h1>Add an Album Review Below!</h1>
+<div class ="container-md">
+<div class ="col-8">
+
+<form method = "POST" id ="select" action ="/addalbumreview">
+<div class="dropdown">
+    <select id ="genre" name = "bandname">
+        <% albumInfo.forEach((album) =>{ %> 
+        <option value="<%= album.album_title %>"><%= album.album_title %></option>
+        <% }) %>
+    </select>
+    <div >
+        <textarea name ="review" class="form-control" placeholder="Enter your review here!"></textarea>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Submit">
+
+</form>
+</div>
+</div>
+<%- include('footer') %>

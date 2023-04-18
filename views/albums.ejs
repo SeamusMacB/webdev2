@@ -1,0 +1,25 @@
+<%- include('header') %>
+<body>
+    <div class ="text-center">
+    <h1>Welcome to the album section!</h1>
+</div>
+
+   
+        <% albumInfo.forEach((album) =>{ %>
+            <div class="container">
+            <p>
+              <a href="/">  <%= album.album_title %></a><br>
+              <img src="<%= album.img_path %>">  </a>
+                
+                <%= album.release_yr %>
+                            
+
+            </p>
+
+        </div>
+
+        <% }) %>
+    
+
+ 
+</body>

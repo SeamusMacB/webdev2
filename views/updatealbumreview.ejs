@@ -1,0 +1,26 @@
+<%- include('header') %>
+
+<div class="text-center">
+<h1>Update an Album Review Below!</h1>
+</div>
+
+
+<form method = "POST" id ="select" action ="/updatealbumreview">
+    <div class="dropdown">
+        <select id ="genre" name = "bandname">
+            <H2>Album Title</H2>
+            <% reviews.forEach((review) =>{ %> 
+            <option value="<%= review.user_review_id %>"><%= review.album_title %></option>
+            
+            <% }) %>
+        </select>
+        <div >
+            <textarea name ="review" class="form-control" placeholder="Enter your review here!"></textarea>
+        </div>
+       
+        <input class="btn btn-primary" type="submit" value="Submit">
+    
+    </form>
+
+
+<%- include('footer') %>

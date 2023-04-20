@@ -1,0 +1,53 @@
+<%- include('header') %>
+
+
+<h1>Add a Collection Below!</h1>
+<form method = "POST" id ="select" action ="/addcollection">
+
+    <div class="container-fluid">
+        <div class="row justify-content-start">
+          
+          <div class="col-md-6">
+            
+            <div >
+                <input name ="collectiontitle" class="form-control" placeholder="Enter your title here!" height ="100">
+            </div>
+
+            <div class="dropdown">
+                <select id ="genre" name = "album1">
+                    <% album.forEach((album) =>{ %> 
+                    <option value="<%= album.album_id %>"><%= album.album_title %></option>
+                    <% }) %>
+                </select>
+                <div>
+            <br>
+            <div class="dropdown">
+                <select id ="genre" name = "album2">
+                    <% album.forEach((album) =>{ %> 
+                    <option value="<%= album.album_id %>"><%= album.album_title %></option>
+                    <% }) %>
+                </select>
+                <div>
+            <br>
+            <div class="dropdown">
+                <select id ="genre" name = "album3">
+                    <% album.forEach((album) =>{ %> 
+                    <option value="<%= album.album_id %>"><%= album.album_title %></option>
+                    <% }) %>
+                </select>
+                <div>
+            <br>
+
+
+            <input class="btn btn-primary" type="submit" value="Submit">
+
+
+
+          </div>
+          <div class="col-md"></div>
+        </div>
+      </div>
+
+</form>
+
+<%- include('footer') %>

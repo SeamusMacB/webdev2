@@ -1,16 +1,24 @@
 <%- include('header') %>
 
 <div class ="text-center">
-        <h1>Add your own review below!</h1>
+        <h1>Would you like to look at album reviews or collection reviews?</h1>
     </div>
  
 
-<form  method ="post">
-<input name ="album_name" type="text" class="form-control" placeholder="Use this to find album reference" >
-<input name ="album_review" type="text" class="form-control" placeholder="Use this as text entry" >
 
-<button type="submit" class="btn btn-primary" type="button" value="submit">Submit</button>
-</form>
 
+
+<div class="container-fluid">
+    <div class="row text-center">
+      <div class="col-6">
+       <a href ="albumreview"><button class="btn btn-primary" type="button">Album Reviews</button></a>
+      </div>
+
+      <div class="col-6">
+        <a href ="collectionreview"><button class="btn btn-primary" type="button">Collection Reviews</button></a>
+      </div>
+      
+    </div>
+  </div>
 
 <%- include('footer') %>

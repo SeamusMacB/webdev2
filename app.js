@@ -89,7 +89,7 @@ app.post("/members", (req,res) =>{
       req.session.uid = rows[0].member_id;
       res.redirect("/dashboard");
     }else{
-      res.send("<code>Access Denied</code>");
+      res.render("failedlogin")
     }
   });
 
@@ -102,7 +102,6 @@ app.get("/contact", (req, res) => {
     res.send("Please sign in")
   }
 });
-
 
 app.post("/contact", (req, res) => {
   
@@ -136,12 +135,12 @@ app.post("/genre", (req, res) =>{
 
 app.get("/addalbumreview", (req, res) =>{
 
-  let album = `SELECT * FROM album`;
+  let album = `SELECT * FROM album INNER JOIN artist_album ON album.album_id=artist_album.album_id `;
 
   db.query(album, (err, albumInfo) => {
     if (err) throw err;
     res.render("addalbumreview", { albumInfo });
-    console.log(albumInfo[0]);
+    
   });
 
 });
@@ -151,13 +150,69 @@ app.post("/addalbumreview", (req, res) =>{
   let memberid = req.session.uid;
   let artist_album_id = req.body.bandname;
   let review = req.body.review;
-  let update = "INSERT INTO user_review( member_id, artist_album_id, review) VALUES (? , ? ,?)";
+  let update = "INSERT INTO user_review( member_id, artist_album_id, review) VALUES (? , ? , ?)";
   db.query(update, [memberid, artist_album_id, review], (err, rows) =>{
     if(err) throw err;
     res.redirect("/");
   });
 })
 
+app.get("/addcollection", (req,res) =>{
+
+  let album = `SELECT * FROM album`;
+
+  db.query(album, (err, album) =>{
+    if(err) throw err;
+    res.render("addcollection", {album});
+  });
+});
+
+app.post("/addcollection", (req,res) =>{
+
+  let title = req.body.collectiontitle;
+  let memberid = req.session.uid;
+  let album1 = req.body.album1;
+  let album2 = req.body.album2;
+  let album3 = req.body.album3;
+
+  console.log(title);
+  console.log(memberid);
+  console.log(album1);
+  console.log(album2);
+  console.log(album3);
+
+  let update = "INSERT INTO member_collection(collection_title, member_id, album_1, album_2, album_3) VALUES (? , ? , ? , ?, ?)"
+  db.query(update, [title, memberid, album1,album2,album3], (err,rows) =>{
+    if(err) throw err;
+    res.redirect("/dashboard");
+  });
+
+});
+
+app.get("/addcollectionreview", (req,res) =>{
+
+  let collections = `SELECT * FROM member_collection`
+  db.query(collections, (err, col) =>{
+    if(err) throw err;
+    res.render("addcollectionreview", {col} );
+  
+  }); 
+})
+
+app.post("/addcollectionreview", (req,res) =>{
+  
+  let memberid = req.session.uid;
+  let collection = req.body.collectionname;
+  let liked = req.body.liked
+
+  let update = "INSERT INTO member_collection_review (member_id, collection_id, liked) VALUES (? , ?, ?)"
+  db.query(update,[memberid,collection, liked],(err,rows)=>{
+    if(err) throw err;
+    res.redirect("/")
+    
+  })
+
+});
 
 app.get("/signUp", (req, res) => {
   res.render("signup");
@@ -165,6 +220,10 @@ app.get("/signUp", (req, res) => {
 
 app.get("/dashboard", (req, res) => {
   res.render("dashboard");
+});
+
+app.get("/dashboard2", (req, res) => {
+  res.render("dashboard2");
 });
 
 app.post("/signUp",(req,res) =>{
@@ -191,6 +250,21 @@ app.get("/albums", (req, res) => {
   });
 });
 
+app.get("/myalbumreviews", (req,res) =>{
+
+    let memberid = req.session.uid;
+
+    let result = `SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id WHERE member_id = ?`;
+
+  console.table(result);
+    db.query(result,[memberid], (err,rows) =>{
+        if(err) throw err;
+        res.render("myalbumreviews", {rows});
+    });
+   
+
+  });
+
 
 app.get("/reviews", (req, res) => {
   let album = `SELECT * FROM user_review`;
@@ -214,6 +288,43 @@ app.post('/reviews', (req, res) =>{
     //res.send(`You have now added a review for <p>${album}</p> stating that : <p>${album_review} </p>`);
     })
  });
+
+ 
+ app.get("/albumreview", (req, res) => {
+  let album =`SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id`;
+
+  db.query(album, (err, albumInfo) => {
+    if (err) throw err;
+    res.render("albumreview", { albumInfo });
+  });
+});
+
+
+app.get("/updatealbumreview", (req,res) =>{
+  
+  let memberid = req.session.uid;
+
+  let result =  `SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id WHERE member_id = ?`;
+
+  console.table(result);
+    db.query(result,[memberid], (err,reviews) =>{
+        if(err) throw err;
+        res.render("Updatealbumreview", {reviews});
+    });
+  
+  
+});
+
+app.post("/updatealbumreview", (req,res) =>{
+
+});
+
+
+ app.get("/failedlogin", (req, res) =>{
+
+  res.render("failedlogin")
+ });
+
 
 app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);

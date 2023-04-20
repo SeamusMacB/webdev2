@@ -1,0 +1,31 @@
+<%- include('header') %>
+<div class ="text-center">
+    <h1>My Album Reviews</h1>
+</div>
+
+
+<div class ="text-center">
+<% rows.forEach((row) =>{ %> 
+<div>
+  <div class="w-400 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+    <div class="card p-0"> <!-- p-0 = padding: 0 -->
+      <img src=" <%= row.img_path %>" class="img-fluid rounded-top" alt="album cover"> <!-- rounded-top = rounded corners on the top -->
+      <!-- Nested content container inside card -->
+      <div class="content">
+        <h2 class="content-title">
+            <%= row.album_title %> <%= row.member_id %>
+        </h2>
+        <p class="text-muted">
+            <%= row.review %>
+        </p>
+        <div class="text-right"> <!-- text-right = text-align: right -->
+          
+        </div>
+      </div>
+    </div>
+  </div>
+    <% }) %>
+
+    
+</div>
+<%- include('footer') %>

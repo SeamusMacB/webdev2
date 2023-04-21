@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql");
 const cookieParser = require('cookie-parser');
 const sessions = require('express-session');
+const checkLogin = require("./middleware/authen");
+
 
 const oneHour = 1000 * 60 * 60 * 1;
 
@@ -22,7 +24,8 @@ let db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "stax",
+  database: "stax2",
+  multipleStatements: true
 });
 
 db.connect((err) => {
@@ -57,15 +60,11 @@ app.get("/band", (req, res) => {
   });
 });
 
-app.get("/fav", (req, res) => {
-  let sessionobj = req.session;
-  if(sessionobj.uid){
-  //let title = "home";
+app.get("/fav", checkLogin, (req, res) => {
+  
   res.send("Access Granted");
-  console.log(sessionobj.uid);
-  }else{
-    res.send("Denied");
-  }
+  
+  
 });
 
 app.get("/members", (req, res) => {
@@ -242,7 +241,7 @@ app.post("/signUp",(req,res) =>{
 
 
 app.get("/albums", (req, res) => {
-  let album = `SELECT * FROM album`;
+  let album = `SELECT * FROM album `;
 
   db.query(album, (err, albumInfo) => {
     if (err) throw err;
@@ -259,6 +258,7 @@ app.get("/myalbumreviews", (req,res) =>{
   console.table(result);
     db.query(result,[memberid], (err,rows) =>{
         if(err) throw err;
+        console.table(rows)
         res.render("myalbumreviews", {rows});
     });
    
@@ -291,11 +291,21 @@ app.post('/reviews', (req, res) =>{
 
  
  app.get("/albumreview", (req, res) => {
-  let album =`SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id`;
+  let album =`SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id ORDER BY album.album_title`;
 
   db.query(album, (err, albumInfo) => {
     if (err) throw err;
     res.render("albumreview", { albumInfo });
+  });
+});
+
+app.get("/collectionreview", (req,res) =>{
+
+  let colreviews = `SELECT * FROM member_collection_review`
+
+  db.query(colreviews, (err, row) =>{
+    if(err) throw err;
+    res.render("collectionreview", {row})
   });
 });
 
@@ -317,7 +327,91 @@ app.get("/updatealbumreview", (req,res) =>{
 
 app.post("/updatealbumreview", (req,res) =>{
 
+  let updatedrow = req.body.review;
+  let updatereview = req.body.updatedReview;
+
+
+  let update = `UPDATE user_review SET review = ? WHERE user_review_id = ?`
+
+  db.query(update,[updatereview,updatedrow], (err,update) =>{
+      if(err) throw err;
+      res.redirect("/dashboard");
+  });
+
 });
+
+
+app.get("/deletealbumreview", (req, res) =>{
+
+  let memberid = req.session.uid;
+
+  let result = `SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id WHERE member_id = ?`;
+
+  console.table(result);
+  db.query(result, [memberid], (err,rows) =>{
+    if(err) throw err; 
+    res.render("deletealbumreview",{rows});
+  });
+ });
+
+app.post("/deletealbumreview", (req,res) =>{
+
+  let user_review = req.body.review
+  console.log(user_review)
+  let deleterecord = `DELETE FROM user_review WHERE user_review_id = ${user_review}`;
+
+  db.query(deleterecord, (err, rows) =>{
+    if(err) throw err;
+    res.redirect("/dashboard");
+
+  });
+});
+
+app.get("/mycollections", (req,res) =>{
+
+
+  let memberid = req.session.uid;
+
+  let result = "SELECT * FROM member_collection WHERE member_id = ?"
+
+  db.query(result, [memberid], (err, rows)=>{
+    if(err) throw err;
+    res.render("mycollections",{rows})
+  });
+
+  
+});
+
+app.get("/deletecollection", (req,res) =>{
+
+  let memeberid = req.session.uid;
+
+  let result = `SELECT * FROM member_collection WHERE member_id = ?`;
+
+  db.query(result,[memeberid], (err,rows) =>{
+    if(err) throw err;
+    res.render("deletecollection", {rows});
+  });
+
+ 
+});
+
+app.post("/deletecollection",(req,res) =>{
+  
+  let userCollection = req.body.userc;
+
+  console.log(userCollection);
+  let deleterecord = `DELETE FROM member_collection WHERE member_collection_id = ?`
+
+  db.query(deleterecord,[userCollection], (err, rows) =>{
+    if(err) throw err;
+    res.redirect("/dashboard");
+  });
+
+
+
+})
+
 
 
  app.get("/failedlogin", (req, res) =>{

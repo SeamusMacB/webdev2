@@ -1,0 +1,27 @@
+<%- include('header') %>
+
+<div class="text-center">
+    <h3>
+    Having second thoughts about an album review you made? Hit the devils lettuce and now you've a new appreciation?<br>
+    Don't worry select your review, give that delete button a nudge and no-one will ever know it review exsisted ;D
+</h3>
+</div>
+
+
+<form method = "POST" id ="select" action ="/deletealbumreview">
+    <div class="dropdown">
+        <select id ="genre" name = "review">
+            <% rows.forEach((album) =>{ %> 
+            <option value="<%= album.user_review_id %>"><%= album.album_title %></option>
+            
+            <% }) %>
+        </select>
+        <div >
+            <textarea name ="test" class="form-control" placeholder="Which review do you want to delete?"></textarea>
+        </div>
+       
+        <input class="btn btn-primary" type="submit" value="Submit">
+    
+    </form>
+
+<%- include('footer') %>

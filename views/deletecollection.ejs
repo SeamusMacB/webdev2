@@ -1,0 +1,21 @@
+<%- include('header') %>
+
+
+<form method = "POST" id ="select" action ="/deletecollection">
+    <div class="dropdown">
+        <select id ="genre" name = "userc">
+            <% rows.forEach((album) =>{ %> 
+            <option value="<%= album.member_collection_id %>"><%= album.collection_title %></option>
+            
+            <% }) %>
+        </select>
+        <div >
+            <textarea name ="test" class="form-control" placeholder="Which review do you want to delete?"></textarea>
+        </div>
+       
+        <input class="btn btn-primary" type="submit" value="Submit">
+    
+    </form>
+
+
+<%- include('footer') %>

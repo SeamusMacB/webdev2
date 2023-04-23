@@ -6,12 +6,17 @@
     <div>
       <div class="w-400 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
         <div class="card p-0"> <!-- p-0 = padding: 0 -->
-          <img src=" <%= row.img_path %>" class="img-fluid rounded-top" alt="album cover"> <!-- rounded-top = rounded corners on the top -->
+          
           <!-- Nested content container inside card -->
           <div class="content">
             <h2 class="content-title">
-                <%= row.album_title %> <%= row.member_id %>
+                <%=row.collection_title%> <%= row.member_id %>
             </h2>
+            <ul>
+              <li><%=row.collection_title%></li>
+              <li><%=row.album_title%></li>
+              
+            </ul>
             <p class="text-muted">
                 <%= row.review %>
             </p>

@@ -60,6 +60,31 @@ app.get("/band", (req, res) => {
   });
 });
 
+
+app.get("/banddetail", (req, res) =>{
+
+     let artist = `SELECT * FROM artist WHERE artist_id = ?`
+
+      let bandid= req.query.artist_id
+
+    db.query(artist,[bandid], (err,rows) =>{
+      //console.table(rows)
+      res.render("banddetail", {rows});
+    });
+});
+
+app.get("/genrebands", (req,res) =>{
+   
+  let genre =`SELECT * FROM album WHERE genre_id = ?`
+   
+  let genreid = req.query.genre_id;
+
+  db.query(genre,[genreid], (err,rows) =>{
+    console.log(rows);
+    res.render("genrebands", {rows});
+    });
+  });
+
 app.get("/fav", checkLogin, (req, res) => {
   
   res.send("Access Granted");
@@ -94,13 +119,9 @@ app.post("/members", (req,res) =>{
 
 });
 
-app.get("/contact", (req, res) => {
-  if(req.session.uid){
-  res.render("contact");
-  }else{ 
-    res.send("Please sign in")
-  }
-});
+app.get("/contact", checkLogin, (req, res) => {
+    res.render("contact");
+  });
 
 app.post("/contact", (req, res) => {
   
@@ -118,7 +139,6 @@ app.get("/genre", (req, res) =>{
   let genre = `SELECT * FROM genre`;
   db.query(genre, (err, genreList) =>{
     if(err) throw err;
-    console.log(genreList)
     res.render("genre", { genreList });
   });
   
@@ -126,11 +146,7 @@ app.get("/genre", (req, res) =>{
 
 });
 
-app.post("/genre", (req, res) =>{
-  const {genre} = req.body;
-  console.log(genre);
-  res.render("/genre");
-});
+
 
 app.get("/addalbumreview", (req, res) =>{
 
@@ -254,11 +270,9 @@ app.get("/myalbumreviews", (req,res) =>{
     let memberid = req.session.uid;
 
     let result = `SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id WHERE member_id = ?`;
-
-  console.table(result);
     db.query(result,[memberid], (err,rows) =>{
         if(err) throw err;
-        console.table(rows)
+        
         res.render("myalbumreviews", {rows});
     });
    
@@ -291,7 +305,14 @@ app.post('/reviews', (req, res) =>{
 
  
  app.get("/albumreview", (req, res) => {
-  let album =`SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id ORDER BY album.album_title`;
+  let album =`SELECT * FROM member
+  INNER JOIN user_review
+  ON member.member_id=user_review.member_id
+  INNER JOIN artist_album 
+  ON user_review.artist_album_id=artist_album.artist_album_id 
+  INNER JOIN album 
+  ON artist_album.album_id=album.album_id 
+  ORDER BY album.album_title`;
 
   db.query(album, (err, albumInfo) => {
     if (err) throw err;
@@ -310,13 +331,13 @@ app.get("/collectionreview", (req,res) =>{
 });
 
 
-app.get("/updatealbumreview", (req,res) =>{
+app.get("/updatealbumreview",checkLogin, (req,res) =>{
   
   let memberid = req.session.uid;
 
   let result =  `SELECT * FROM user_review INNER JOIN artist_album ON user_review.artist_album_id=artist_album.artist_album_id INNER JOIN album ON artist_album.album_id=album.album_id WHERE member_id = ?`;
 
-  console.table(result);
+ 
     db.query(result,[memberid], (err,reviews) =>{
         if(err) throw err;
         res.render("Updatealbumreview", {reviews});
@@ -325,7 +346,7 @@ app.get("/updatealbumreview", (req,res) =>{
   
 });
 
-app.post("/updatealbumreview", (req,res) =>{
+app.post("/updatealbumreview",(req,res) =>{
 
   let updatedrow = req.body.review;
   let updatereview = req.body.updatedReview;
@@ -341,7 +362,7 @@ app.post("/updatealbumreview", (req,res) =>{
 });
 
 
-app.get("/deletealbumreview", (req, res) =>{
+app.get("/deletealbumreview", checkLogin, (req, res) =>{
 
   let memberid = req.session.uid;
 
@@ -367,22 +388,22 @@ app.post("/deletealbumreview", (req,res) =>{
   });
 });
 
-app.get("/mycollections", (req,res) =>{
+app.get("/mycollections", checkLogin, (req,res) =>{
 
 
   let memberid = req.session.uid;
 
-  let result = "SELECT * FROM member_collection WHERE member_id = ?"
+  let result = `SELECT * FROM member_collection WHERE member_id = ?;SELECT * FROM member_collection INNER JOIN album ON member_collection.album_1=album.album_id WHERE member_id = ?`;
+  console.log(result)
+  console.table(result);
 
-  db.query(result, [memberid], (err, rows)=>{
+  db.query(result, [memberid, memberid], (err, rows)=>{
     if(err) throw err;
     res.render("mycollections",{rows})
   });
-
-  
 });
 
-app.get("/deletecollection", (req,res) =>{
+app.get("/deletecollection", checkLogin,(req,res) =>{
 
   let memeberid = req.session.uid;
 
@@ -396,7 +417,7 @@ app.get("/deletecollection", (req,res) =>{
  
 });
 
-app.post("/deletecollection",(req,res) =>{
+app.post("/deletecollection", checkLogin, (req,res) =>{
   
   let userCollection = req.body.userc;
 

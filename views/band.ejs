@@ -9,18 +9,20 @@
         <% artistList.forEach((artist)=>{ %>
 
             <div class="card">
-                <h2 class="card-title">
+                <h2 class="card-title text-center">
 
 
-                    <a href="/band?artist_id=<%= artist.artist_id%>">
+                    <a href="/banddetail?artist_id=<%= artist.artist_id%>">
                         <%= artist.artist_name %>
                     </a>
                 </h2>
+                <div class ="album_img text-center">
                 <p>
-                    <%= artist.About %>
+                    <img src ="<%= artist.img_path %>">
                 </p>
+            </div>
                 <div class="text-right"> <!-- text-right = text-align: right -->
-                    <a href="#" class="btn">Read more</a>
+                    <a href="/banddetail?artist_id=<%= artist.artist_id%>" class="btn">Read more</a>
                 </div>
             </div>
 

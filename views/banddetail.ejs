@@ -1,4 +1,25 @@
 <%- include('header') %>
 
+<% rows.forEach((artist)=>{ %>
+
+    <div class="card">
+        <h2 class="card-title">
+
+
+            <a href="/banddetail?artist_id=<%= artist.artist_id%>">
+                <%= artist.artist_name %>
+            </a>
+        </h2>
+        <p>
+            <img src ="<%= artist.img_path %>">
+            <div>
+              <h2>  <%= artist.About %>"> </h2>
+
+            </div>
+        </p>
+       
+    </div>
+
+    <% }) %>
 
 <%- include('footer') %>

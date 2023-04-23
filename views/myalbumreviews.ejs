@@ -1,29 +1,38 @@
+
 <%- include('header') %>
-<div class ="text-center">
-    <h1>My Album Reviews</h1>
-</div>
 
+<body>
+  <!-- Page wrapper with content-wrapper inside -->
+  <div class="page-wrapper">
+    <div class="content-wrapper">
+      <!-- Container-fluid -->
+      <div class="container-fluid">
+        <!-- First comes a content container -->
+        <div class="content text-center">
+          <h1 class="content-title font-size-22"> 
+           Your Reviews
+          </h1>
 
-<div class ="text-center">
-<% rows.forEach((row) =>{ %> 
-<div>
-  <div class="w-400 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
-    <div class="card p-0"> <!-- p-0 = padding: 0 -->
-      <img src=" <%= row.img_path %>" class="img-fluid rounded-top" alt="album cover"> <!-- rounded-top = rounded corners on the top -->
-      <!-- Nested content container inside card -->
-      <div class="content">
-        <h2 class="content-title">
-            <%= row.album_title %> <%= row.member_id %>
-        </h2>
-        <p class="text-muted">
-            <%= row.review %>
-        </p>
-        <div class="text-right"> <!-- text-right = text-align: right -->
-          
+          See what reviews you've left behind for others to review!
         </div>
+
+        <% rows.forEach((review)=>{ %>
+
+        <!-- Next comes a card -->
+        <div class="card">
+          <h2 class="card-title">
+            <%= review.album_title %>
+            <br>
+            <br>
+            <img src="<%= review.img_path %>">
+          </h2>
+          <%= review.review %>
+        </div>
+
+        <% }) %>
+
+        
       </div>
     </div>
   </div>
-    <% }) %>   
-</div>
-<%- include('footer') %>
+</body>

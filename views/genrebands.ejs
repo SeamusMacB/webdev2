@@ -1,0 +1,26 @@
+<%- include('header') %>
+
+
+<% rows.forEach((album)=>{ %>
+
+    <div class="card">
+        <h2 class="card-title">
+
+            <h1>
+                <%= album.album_title %>
+            </h1>
+            <a href="/banddetail?artist_id=<%= album.artist_id%>">
+               
+            </a>
+        </h2>
+        <p>
+            <img src ="<%= album.img_path %>">
+            <div>
+              <h2>  <%= album.About %> </h2>
+
+            </div>
+        </p>
+       
+    </div>
+
+    <% }) %>

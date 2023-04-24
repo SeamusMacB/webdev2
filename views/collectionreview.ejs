@@ -1,7 +1,19 @@
 <%- include('header') %>
 
+<% row.forEach((album) =>{ %>
+    <div class="container text-center">
+    <p>
+      <a href="/">  <%= album[] %></a><br>
+      <div class="album_img">
+      <img src="<%= album.img_path %>">  </a>
+      </div>  
+        <%= album.release_yr %>
+                    
 
+    </p>
 
+</div>
 
+<% }) %>
 
 <%- include('footer') %>

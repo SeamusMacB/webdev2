@@ -13,30 +13,37 @@
                 <input name ="collectiontitle" class="form-control" placeholder="Enter your title here!" height ="100">
             </div>
 
-            <div class="dropdown">
+          
                 <select id ="genre" name = "album1">
                     <% album.forEach((album) =>{ %> 
-                    <option value="<%= album.album_id %>"><%= album.album_title %></option>
-                    <% }) %>
+                    
+                  
                 </select>
                 <div>
-            <br>
-            <div class="dropdown">
-                <select id ="genre" name = "album2">
-                    <% album.forEach((album) =>{ %> 
-                    <option value="<%= album.album_id %>"><%= album.album_title %></option>
-                    <% }) %>
-                </select>
-                <div>
-            <br>
-            <div class="dropdown">
-                <select id ="genre" name = "album3">
-                    <% album.forEach((album) =>{ %> 
-                    <option value="<%= album.album_id %>"><%= album.album_title %></option>
-                    <% }) %>
-                </select>
-                <div>
-            <br>
+                    
+
+                    <div class="w-400 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+                        <div class="card p-0"> <!-- p-0 = padding: 0 -->
+                            <img src="<%= album.img_path %>" class="img-fluid rounded-top" alt="..."> <!-- rounded-top = rounded corners on the top -->
+                          <!-- Nested content container inside card -->
+                          <div class="content">
+                            <h2 class="content-title">
+                                <%= album.album_title %>
+                            </h2>
+                            <p class="text-muted">
+                              Subtitle that hooks the reader and prompts them to click on the read more button.
+                            </p>
+                            <div class="text-right"> <!-- text-right = text-align: right -->
+                              <a href="#" class="btn">Read more</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <input type="checkbox" id="vehicle1" name="Vinyl<%= album.album_id %>" value="<%= album.album_id %>">
+<label for="vehicle1"> Add to collection</label><br>
+<% }) %>
+
 
 
             <input class="btn btn-primary" type="submit" value="Submit">

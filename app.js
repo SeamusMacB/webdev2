@@ -24,7 +24,7 @@ let db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "stax2",
+  database: "stax3",
   multipleStatements: true
 });
 
@@ -185,23 +185,34 @@ app.get("/addcollection", (req,res) =>{
 app.post("/addcollection", (req,res) =>{
 
   let title = req.body.collectiontitle;
-  let memberid = req.session.uid;
-  let album1 = req.body.album1;
-  let album2 = req.body.album2;
-  let album3 = req.body.album3;
+  let user = req.session.uid;
 
-  console.log(title);
-  console.log(memberid);
-  console.log(album1);
-  console.log(album2);
-  console.log(album3);
+  console.log(req.body)
+  
+  let vinylIDCount = []
+  for (key in req.body){
+    if(key.startsWith("Vinyl")) {
+      vinylIDCount.push(req.body[key])
+    }
+  }
+console.log(vinylIDCount);
 
-  let update = "INSERT INTO member_collection(collection_title, member_id, album_1, album_2, album_3) VALUES (? , ? , ? , ?, ?)"
-  db.query(update, [title, memberid, album1,album2,album3], (err,rows) =>{
+  let update = "INSERT INTO collection (title, member_id) VALUES (?,?)"
+
+  db.query(update, [title,user], (err,rows) =>{
     if(err) throw err;
+
+    const collectionid = rows.insertId
+
+    vinylIDCount.forEach((record) => {
+      let insert = "INSERT INTO album_collection (collection_id, album_id) VALUES(?,?)"
+      db.query(insert,[collectionid, record], (err, rows) =>{
+        if(err) throw err;
+      })
+    });
+
     res.redirect("/dashboard");
   });
-
 });
 
 app.get("/addcollectionreview", (req,res) =>{
@@ -322,10 +333,19 @@ app.post('/reviews', (req, res) =>{
 
 app.get("/collectionreview", (req,res) =>{
 
-  let colreviews = `SELECT * FROM member_collection_review`
+  let colreviews = `SELECT album_1,album_title,collection_title FROM member_collection
+  INNER JOIN album
+  ON member_collection.album_1=album.album_id;
+  SELECT album_2, album_title FROM member_collection
+  INNER JOIN album
+  ON member_collection.album_2=album.album_id;
+  SELECT album_3, album_title FROM member_collection
+  INNER JOIN album
+  ON member_collection.album_3=album.album_id`
 
   db.query(colreviews, (err, row) =>{
     if(err) throw err;
+    console.log(row)
     res.render("collectionreview", {row})
   });
 });
@@ -341,9 +361,7 @@ app.get("/updatealbumreview",checkLogin, (req,res) =>{
     db.query(result,[memberid], (err,reviews) =>{
         if(err) throw err;
         res.render("Updatealbumreview", {reviews});
-    });
-  
-  
+    }); 
 });
 
 app.post("/updatealbumreview",(req,res) =>{

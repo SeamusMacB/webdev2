@@ -276,6 +276,17 @@ app.get("/albums", (req, res) => {
   });
 });
 
+app.get("/addalbum", (req,res) =>{
+
+  let genre = `SELECT * FROM genre`
+
+  db.query(genre, (err, genre) =>{
+    if(err) throw err;
+  });
+
+  res.render("addalbum", {genre})
+});
+
 app.get("/myalbumreviews", (req,res) =>{
 
     let memberid = req.session.uid;
@@ -411,11 +422,10 @@ app.get("/mycollections", checkLogin, (req,res) =>{
 
   let memberid = req.session.uid;
 
-  let result = `SELECT * FROM member_collection WHERE member_id = ?;SELECT * FROM member_collection INNER JOIN album ON member_collection.album_1=album.album_id WHERE member_id = ?`;
-  console.log(result)
-  console.table(result);
+  let result = `SELECT * FROM album_collection INNER JOIN collection ON album_collection.collection_id=collection.collection_id INNER JOIN member ON collection.member_id=member.member_id WHERE member.member_id = ?`;
+  
 
-  db.query(result, [memberid, memberid], (err, rows)=>{
+  db.query(result, [memberid], (err, rows)=>{
     if(err) throw err;
     res.render("mycollections",{rows})
   });

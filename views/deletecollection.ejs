@@ -4,8 +4,8 @@
 <form method = "POST" id ="select" action ="/deletecollection">
     <div class="dropdown">
         <select id ="genre" name = "userc">
-            <% rows.forEach((album) =>{ %> 
-            <option value="<%= album.member_collection_id %>"><%= album.collection_title %></option>
+            <% rows.forEach((collection) =>{ %> 
+            <option value="<%= collection.collection_id %>"><%= collection.Title %></option>
             
             <% }) %>
         </select>

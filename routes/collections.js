@@ -10,6 +10,7 @@ router.get("/collectionreview", (req,res) =>{
 
   db.query(colreviews, (err, row) =>{
     if(err) throw err;
+   
     res.render("collectionreview", {row})
   });
 });
@@ -23,6 +24,8 @@ router.get("/addcollectionreview", (req,res) =>{
     
     }); 
   })
+  
+
   
   router.post("/addcollectionreview", (req,res) =>{
     
@@ -87,6 +90,8 @@ router.get("/addcollection", checkLogin, (req,res) =>{
       res.render("addcollection", {album});
     });
   });
+
+
   
   router.post("/addcollection", (req,res) =>{
   
@@ -120,5 +125,17 @@ router.get("/addcollection", checkLogin, (req,res) =>{
       res.redirect("/dashboard");
     });
   });
+
+
+  router.get("/addcollection2", checkLogin, (req,res) =>{
+
+    let album = `SELECT * FROM album INNER JOIN artist_album ON album.album_id=artist_album.album_id INNER JOIN artist ON artist_album.artist_id=artist.artist_id`;
+  
+    db.query(album, (err, album) =>{
+      if(err) throw err;
+      res.render("addcollection2", {album});
+    });
+  });
+
 
   module.exports = router;

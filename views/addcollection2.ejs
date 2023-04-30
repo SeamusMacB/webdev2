@@ -1,0 +1,72 @@
+<%- include('header2') %>
+    <link rel="stylesheet" href="../grid_styles.css">
+
+
+    <form method="POST" id="select" action="/addcollection">
+
+        <div class="container-fluid">
+            <div class="row justify-content-start">
+
+                <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-sm"> </div>
+                      <div class="col-sm">  <h1>Add a Collection Below!</h1>
+                        <div>
+                            <input name="collectiontitle" class="form-control" placeholder="Enter your title here!"
+                                height="100">
+                        </div></div>
+                      <div class="col-sm"></div>
+                    </div>
+                  </div>
+                  
+                
+
+                <div class="container2">
+                    <% album.forEach((album)=>{ %>
+                        <div class="responsive">
+                            <div class="cards2">
+                                <div class="card-img2">
+                                    <img src="<%= album.album_img_path %>" alt="">
+                                </div>
+                                <div class="card-body2"></div>
+                                <h5>
+                                    <%= album.artist_name %>
+                                </h5>
+                                <h5>
+                                    <%= album.album_title %>
+                                </h5>
+
+                                <div class="card-footer2">
+                                    <input type="checkbox" id="vehicle1" name="Vinyl<%= album.album_id %>"
+                                        value="<%= album.album_id %>">
+                                    <label for="vehicle1" class="text-center"> Add to collection</label><br>
+                                    <a href="/banddetail?artist_id=<%=album.artist_id%>">
+                                      
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+
+
+
+                <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-sm"></div>
+
+                      <div class="col-sm text-center">
+                        <input class="btn btn-primary" type="submit" value="Submit"></div>
+
+                      <div class="col-sm"></div>
+                    </div>
+                  </div>
+
+                <div class="col-md">
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <%- include('footer') %>

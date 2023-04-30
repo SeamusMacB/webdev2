@@ -1,0 +1,53 @@
+
+<%- include('header2') %>
+
+<br>
+<br>
+<br>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../grid_styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+   
+    <div class ="text-center">
+        <h1>Welcome to the Vinyl Section!</h1>
+    </div>
+    
+    <div class="container2">
+        <% row.forEach((album)=>{ %>
+            <div class ="responsive">
+        <div class="cards2">
+        <div class="card-img2">
+            <img src="<%= album.album_img_path %>" alt="">
+        </div>
+        <div class="card-body2"></div>
+        <h5><%= album.artist_name %></h5>
+        <h5><%= album.album_title %></h5>
+        
+        <div class="card-footer2">
+            <a href="/banddetail?artist_id=<%=album.artist_id%>">
+            <button>Read More</button>
+        </a>
+        </div>
+        </div>
+    </div>
+        <% }) %>
+    </div>
+
+    
+   
+
+</body>
+</html>

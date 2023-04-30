@@ -1,29 +1,29 @@
 <%- include('header') %>
+<link rel="stylesheet" href="../grid_styles.css">
 
 
 
-        <% genreList.forEach((genre) =>{ %> 
-          
-          <div class="w-400 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
-            <div class="card p-0"> <!-- p-0 = padding: 0 -->
-              <img src="<%= genre.img_path %>" class="img-fluid rounded-top" alt="..."> <!-- rounded-top = rounded corners on the top -->
-              <!-- Nested content container inside card -->
-              <div class="content">
-                <h2 class="content-title">
-                  <%= genre.genre_desc %>
-                </h2>
-                <p class="text-muted">
-                  Subtitle that hooks the reader and prompts them to click on the read more button.
-                </p>
+            <div class="container2">
+              <% genreList.forEach((album)=>{ %>
+                  <div class ="responsive">
+              <div class="cards2">
+              <div class="card-img2">
+                  <img src="<%= album.img_path %>" alt="">
+              </div>
+              <div class="card-body2 text-center">
+              <h4> <%= album.genre_desc %></h4>
+            </div>
+              <div class="card-footer2">
                 <div class="text-right"> <!-- text-right = text-align: right -->
-                  <a href="/genrebands?genre_id=<%= genre.genre_id %>" class="btn">Find more <%= genre.genre_desc %> albums here</a>
+                  <a href="/genrebands?genre_id=<%= album.genre_id %>" class="btn">Find more <%= album.genre_desc %> albums here</a>
                 </div>
               </div>
+              </div>
             </div>
-          </div>
-          
+              <% }) %>
+            </div>
 
-        <% }) %>
+        
  
 
 

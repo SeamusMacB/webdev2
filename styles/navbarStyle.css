@@ -9,25 +9,23 @@ body{
     height: 100px;
     background-color: #000;
     background-image: url('https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1517&q=80');
- 
-    background-size: cover;
+    background-size: 100%;
     background-position: center;
 }
 
 li{
-    list-style: none;
-}
+    list-style: none !important ;
+} 
 
 a{
     text-decoration: none;
-    color: #fff;
-    font-size: 1rem;
-    
+    color: #fff !important;
+    font-size: 1rem !important;
 }
 
 a:hover{
-    color: orange;
-} 
+    color: orange !important;
+}
 /*header*/
 
 header{
@@ -54,7 +52,6 @@ header{
 .navbar .links{
     display: flex;
     gap: 2rem;
-    
 }
 
 .navbar .toggle_btn{
@@ -79,7 +76,7 @@ header{
 
 .action_btn:hover{
     scale: 1.05;
-    color: #fff;
+    color: #fff !important;
 }
 
 .action_btn:active{

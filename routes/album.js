@@ -11,6 +11,15 @@ router.get("/albums", (req, res) => {
   });
 });
 
+router.get("/album2", (req, res) => {
+  let colreviews = `SELECT * FROM album INNER JOIN artist_album ON album.album_id=artist_album.album_id INNER JOIN artist ON artist_album.artist_id=artist.artist_id;`
+
+  db.query(colreviews, (err, row) =>{
+    if(err) throw err;
+    res.render("album2", {row})
+  });
+});
+
 router.get("/addalbum", (req, res) => {
   let genre = `SELECT * FROM genre`;
 
